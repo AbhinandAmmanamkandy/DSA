@@ -5,7 +5,10 @@ public class BinarySearch {
         int[] nums = {1, 3, 5, 7, 9, 11, 13};
         int target = 11;
 
-        int result = binarySearch(nums, target);
+        int left = 0;
+        int right = nums.length - 1;
+
+        int result = binarySearch(nums, target, left, right);
         if(result != -1){
             System.out.println("Number found at positin: " + result);
         } else{
@@ -14,22 +17,21 @@ public class BinarySearch {
 
     }
 
-    public static int binarySearch(int[] nums, int target){
+    public static int binarySearch(int[] nums, int target, int left, int right){
 
-        int left = 0;
-        int right = nums.length - 1;
+        // 1 3 5 7 9 11 13
 
-        while(left <= right){
+        if(left <= right){
             int mid = (left + right) / 2;
             if(nums[mid] == target)
                 return mid;
             else if(nums[mid] < target)
-                left = mid + 1;
+                return binarySearch(nums, target, mid + 1, right);
             else
-                right = mid -1;
+                return binarySearch(nums, target, left, mid - 1);
+        }else {
+            return -1;
         }
-
-        return -1;
 
     }
 
