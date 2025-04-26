@@ -1,13 +1,29 @@
 import java.util.Arrays;
 
 public class Main {
-    static int[] nums1 = {1, 3, 5, 0, 0, 0};
-    static int[] nums2 = {2, 4, 6};
-    static int m = 3;
-    int n = 3;
-    static int p = m;
+    static int[] nums1 = {1, 2, 3, 0, 0, 0};
+    static int[] nums2 = {1, 2, 3};
     static int i = 0;
     static int j = 0;
+    static int p = 3;
+
+    public void setMinimum() {
+        int minValue = nums1[p] == 0 ? Math.min(nums1[i], nums2[j]) : Math.min(Math.min(nums1[i], nums1[p]), Math.min(nums1[p], nums2[j]));
+        int minIndex = nums1[i] == minValue ? i : nums1[p] == minValue ? p : j;
+        if(i == p) {
+            p++;
+        }
+        if(nums1[minIndex] == minValue) {
+            if (i != minIndex) {
+                swap(i, nums1, p, nums1);
+            }
+            i++;
+        } else {
+            nums1[p] = nums1[i];
+            swap(i, nums1, j, nums2);
+            j++;
+        }
+    }
 
     public void swap(int i, int[] nums1,int j, int[] nums2) {
         int temp = nums1[i];
@@ -15,44 +31,21 @@ public class Main {
         nums2[j] = temp;
     }
     public void merge() {
-        if(nums1[p] == 0) {
-            if(nums1[i] < nums2[j]) {
-                i++;
-            } else if(nums1[i] > nums2[j]) {
-                nums1[p] = nums1[i];
-                swap(i, nums1, j, nums2);
-                j++;
-            }
-        } else {
-            // Get Minimum of three
-            if(nums1[i] == nums1[p]) {
-                p++;
-            } else if(nums1[p] == nums2[j]) {
-                // Maybe p++?
-                j++;
-            }else if(nums1[i] < nums1[p] && nums1[i] < nums2[j]) {
-                i++;
-            } else if(nums1[p] < nums1[i] && nums1[p] < nums2[j]) {
-                swap(i, nums1, p, nums1);
-                i++;
-            } else if(nums2[j] < nums1[p] && nums2[j] < nums1[i]) {
-                swap(i, nums1, j, nums2);
-                j++;
-            }
-        }
-    }
-    public void loop() {
-        while(i < m+n) {
-            merge();
-        }
-        // Copy Remaining value
-        nums1[i-1] = nums2[j];
+        setMinimum();
     }
     public static void main(String[] args) {
+        int count = 1;
+        System.out.println(count++ + "-> " + Arrays.toString(nums1));
         Main main = new Main();
-        main.loop();
-        System.out.println(Arrays.toString(nums1));
-        System.out.println(Arrays.toString(nums2));
-        System.out.println("i: " + i + "\nj: " + j + "\np: " + p);
+        main.merge();
+        System.out.println(count++ + "-> " + Arrays.toString(nums1));
+        main.merge();
+        System.out.println(count++ + "-> " + Arrays.toString(nums1));
+        main.merge();
+        System.out.println(count++ + "-> " + Arrays.toString(nums1));
+        main.merge();
+        System.out.println(count++ + "-> " + Arrays.toString(nums1));
+        main.merge();
+        System.out.println(count++ + "-> " + Arrays.toString(nums1));
     }
 }
